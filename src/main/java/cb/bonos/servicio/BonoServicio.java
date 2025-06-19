@@ -30,4 +30,9 @@ public class BonoServicio implements IBonoServicio{
     public void eliminarBono(Bono bono) {
         bonoRepositorio.delete(bono);
     }
+
+    @Override
+    public List<Bono> listarBonoPorStatus(Bono.Estatus status) {
+        return bonoRepositorio.findByEstatus(status);
+    }
 }
