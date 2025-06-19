@@ -1,43 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <title>Sistema de Bonos</title>
 </head>
 <body>
-    <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/">Sistema de bonos</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/">Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/agregar">Agregar Bono</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Pricing</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-                        </li>
-                    </ul>
-                </div>
+<!--    Div del menu de navegacion   -->
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Sistema de bonos</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/agregar">Agregar Bono</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Pricing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                    </li>
+                </ul>
             </div>
-        </nav>
-    </div>
-    <div class="container">
-        <div class="container text-center" style="margin:30px">
-            <h3> Sistema de bonos</h3>
         </div>
+    </nav>
+</div>
+<!--Div para desplegar la tabla-->
+<div class="container">
+    <div class="container text-center" style="margin:30px">
+        <h3> Sistema de bonos</h3>
+    </div>
+    <div>
+        <table class="table table-striped table-hover align-middle table-bordered">
+            <thead class="table-dark text-center">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Servicio</th>
+                <th scope="col">Comprador</th>
+                <th scope="col">Beneficiario</th>
+                <th scope="col">Fecha de compra</th>
+                <th scope="col">Fecha de vencimiento</th>
+                <th scope="col">Estatus</th>
+                <th scope="col">Monto</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="bono: ${bonos}">
+                <th th:text="${bono.idBono}" scope="row">1</th>
+                <td th:text="${bono.servicio}">Masaje</td>
+                <td th:text="${bono.comprador}">Otto</td>
+                <td th:text="${bono.beneficiario}">Xuxa</td>
+                <td th:text="${bono.fechaCompra}"></td>
+                <td th:text="${bono.fechaVencimiento}"></td>
+                <td th:text="${bono.estatus}">ACTIVO</td>
+                <td th:text="${bono.monto}">1000$</td>
+            </tr>
+            </tbody>
+        </table>
 
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+        crossorigin="anonymous"></script>
 </body>
 </html>
