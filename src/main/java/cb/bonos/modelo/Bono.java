@@ -1,0 +1,31 @@
+package cb.bonos.modelo;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import java.time.LocalDate;
+
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+
+public class Bono {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idBono;
+    private String servicio;
+    private LocalDate fechaCompra;
+    private LocalDate fechaVencimiento;
+    private String comprador;
+    private String beneficiario;
+    private Double monto;
+    private String estatus;
+}
