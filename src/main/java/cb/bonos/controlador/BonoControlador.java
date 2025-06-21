@@ -27,4 +27,9 @@ public class BonoControlador {
         return "index";
     }
 
+    @GetMapping("/agregar")
+    public String mostrarAgregar(ModelMap modelo) {
+        return "agregar";
+    }
+
 }

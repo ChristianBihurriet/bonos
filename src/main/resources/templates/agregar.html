@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragmentos/cabecero::cabecero-seccion(titulo='Agregar')"></head>
+<body>
+<div th:replace="fragmentos/navegacion::navegacion-seccion"></div>
+
+<div class="container">
+    <div class="container text-center" style="margin:30px">
+        <h3>Agregar bono</h3>
+    </div>
+    <div class="container">
+        <form>
+            <div class="mb-3">
+                <label for="servicio" class="form-label">Servicio</label>
+                <input type="text" class="form-control" id="servicio" name="servicio">
+<!--                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>-->
+            </div>
+            <div class="mb-3">
+                <label for="comprador" class="form-label">Comprador</label>
+                <input type="text" class="form-control" id="comprador" name="comprador">
+            </div>
+            <div class="mb-3">
+                <label for="beneficiario" class="form-label">Beneficiario</label>
+                <input type="text" class="form-control" id="beneficiario" name="beneficiario">
+            </div>
+            <div class="mb-3">
+                <label for="fechacompra" class="form-label">Fecha de compra</label>
+                <input type="date" class="form-control" id="fechacompra" name="fechacompra">
+            </div>
+            <div class="mb-3">
+                <label for="fechavencimiento" class="form-label">Fecha de vencimiento</label>
+                <input type="date" class="form-control" id="fechavencimiento" name="fechavencimiento">
+            </div>
+            <div class="mb-3">
+                <label for="estatus" class="form-label">Estado</label>
+                <select class="form-select" aria-label="Default select example" id="estatus" name="estatus">
+                    <option selected>ACTIVO</option>
+                    <option value="1">ACTIVO</option>
+                    <option value="2">USADO</option>
+                    <option value="3">VENCIDO</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="monto" class="form-label">Monto (€)</label>
+                <input type="number" class="form-control" id="monto" name="monto" placeholder="0.00" step="0.01" min="0">
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-sm me-3">Agregar</button>
+                <a href="/" class="btn btn-danger btn-sm">Volver</a>
+            </div>
+
+<!--            <div class="mb-3 form-check">-->
+<!--                <input type="checkbox" class="form-check-input" id="exampleCheck1">-->
+<!--                <label class="form-check-label" for="exampleCheck1">Check me out</label>-->
+<!--            </div>-->
+
+        </form>
+    </div>
+</div>
+
+<div th:replace="fragmentos/footer::footer"></div>
+</body>
+</html>
