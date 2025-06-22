@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragmentos/cabecero::cabecero-seccion(titulo='Inicio')"></head>
+<head th:replace="~{fragmentos/cabecero::cabecero-seccion(titulo='Inicio')}"></head>
 <body>
-<div th:replace="fragmentos/navegacion::navegacion-seccion"></div>
+<div th:replace="~{fragmentos/navegacion::navegacion-seccion}"></div>
 <!--Div para desplegar la tabla-->
 <div class="container">
     <div class="container text-center" style="margin:30px">
@@ -20,6 +20,7 @@
                 <th scope="col">Fecha de vencimiento</th>
                 <th scope="col">Estatus</th>
                 <th scope="col">Monto</th>
+                <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -32,6 +33,36 @@
                 <td th:text="${bono.fechaVencimiento}"></td>
                 <td th:text="${bono.estatus}">ACTIVO</td>
                 <td th:text="${bono.monto}">1000$</td>
+<!--                <td class="text-center">-->
+<!--                    <div class="container">-->
+<!--                        <a th:href="@{/editar/{id}(id=${bono.idBono})}" class="btn btn-warning btn-sm me-3">Editar</a>-->
+
+<!--                    </div>-->
+<!--                </td>-->
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-warning dropdown-toggle btn-sm me-3" type="button" data-bs-toggle="dropdown">
+                            Acciones
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" th:href="@{'/cambiar-estatus/' + ${bono.idBono} + '?valor=USADO'}"> Marcar como usado</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" th:href="@{'/cambiar-estatus/' + ${bono.idBono} + '?valor=VENCIDO'}"> Marcar como vencido</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" th:href="@{'/cambiar-estatus/' + ${bono.idBono} + '?valor=ACTIVO'}"> Marcar como activo</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" th:href="@{/editar/{id}(id=${bono.idBono})}">Editar bono</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" th:href="@{/eliminar/{id}(id=${bono.idBono})}">Eliminar</a>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -39,6 +70,6 @@
     </div>
 </div>
 
-<div th:replace="fragmentos/footer::footer"></div>
+<div th:replace="~{fragmentos/footer::footer}"></div>
 </body>
 </html>
