@@ -10,7 +10,7 @@
     </div>
     <div class="container">
         <form action="/editar" th:object="${bono}" method="post">
-            <input type="hidden" th:field="*{idBono}"/>
+            <input type="hidden" name="idBono" th:value="${idBono}" />
             <div class="mb-3">
                 <label for="servicio" class="form-label">Servicio</label>
                 <input type="text" class="form-control" id="servicio" name="servicio" required="true" th:field="*{servicio}">

@@ -2,6 +2,9 @@ package cb.bonos.servicio;
 import cb.bonos.modelo.Bono;
 import cb.bonos.repositorio.BonoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -29,6 +32,11 @@ public class BonoServicio implements IBonoServicio{
     @Override
     public void eliminarBono(Bono bono) {
         bonoRepositorio.delete(bono);
+    }
+
+    @Override
+    public Page<Bono> listarBonosPaginados(Pageable pageable) {
+        return bonoRepositorio.findAll(pageable);
     }
 
     @Override

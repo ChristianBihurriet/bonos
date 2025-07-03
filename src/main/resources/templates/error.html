@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/cabecero::cabecero-seccion(titulo='Error')}"></head>
+<body>
+
+
+<div class="container text-center mt-5">
+  <h1 class="display-4">¡Ups!</h1>
+  <p class="lead">Ha ocurrido un error inesperado.</p>
+  <p th:if="${status}" class="text-muted">Código de error: <span th:text="${status}">500</span></p>
+  <p th:if="${error}" class="text-muted">Descripción: <span th:text="${error}">Error interno del servidor</span></p>
+  <a href="/" class="btn btn-primary mt-3">Volver al inicio</a>
+</div>
+
+</body>
+</html>

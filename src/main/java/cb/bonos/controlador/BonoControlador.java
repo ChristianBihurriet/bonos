@@ -6,6 +6,10 @@ import cb.bonos.servicio.BonoServicio;
 import jakarta.validation.Valid;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.slf4j.Logger;
@@ -26,10 +30,13 @@ public class BonoControlador {
 
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/")
-    public String iniciar(ModelMap modelo) {
-        List<Bono> bonos = bonoServicio.listarBonos();
-        bonos.forEach(bono -> logger.info(bono.toString()));
-        modelo.put("bonos", bonos);
+    public String iniciar(@RequestParam(defaultValue = "0") int page,
+                          @RequestParam(defaultValue = "5") int size,
+                          ModelMap modelo) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("fechaCompra").descending());
+        Page<Bono> paginaBonos = bonoServicio.listarBonosPaginados(pageable);
+        modelo.addAttribute("bonos", paginaBonos.getContent());
+        modelo.addAttribute("pagina", paginaBonos);
         return "index";
     }
 
@@ -69,14 +76,43 @@ public class BonoControlador {
     public String mostrarEditar(@PathVariable(value = "id") int idBono, ModelMap modelo) {
         Bono bono = bonoServicio.getBonoById(idBono);
         logger.info("Bono a editar: {}", bono);
-        modelo.addAttribute("bono", bono);
+
+        BonoDTO bonoDTO = new BonoDTO(
+                bono.getServicio(),
+                bono.getFechaCompra(),
+                bono.getFechaVencimiento(),
+                bono.getComprador(),
+                bono.getBeneficiario(),
+                bono.getMonto(),
+                bono.getEstatus().name()
+        );
+
+        modelo.addAttribute("bono", bonoDTO);
+        modelo.addAttribute("idBono", bono.getIdBono()); // lo necesitás para guardar después
         return "editar";
     }
 
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PostMapping("/editar")
-    public String editar(@ModelAttribute("bono") Bono bono) {
-        logger.info("Bono a editar: {}", bono);
+    public String editar(@RequestParam("idBono") int idBono,
+                         @Valid @ModelAttribute("bonoDTO") BonoDTO bonoDTO,
+                         BindingResult result,
+                         ModelMap modelo) {
+
+        if (result.hasErrors()) {
+            modelo.addAttribute("idBono", idBono);
+            return "editar";
+        }
+
+        Bono bono = bonoServicio.getBonoById(idBono);
+        bono.setServicio(bonoDTO.getServicio());
+        bono.setFechaCompra(bonoDTO.getFechaCompra());
+        bono.setFechaVencimiento(bonoDTO.getFechaVencimiento());
+        bono.setComprador(bonoDTO.getComprador());
+        bono.setBeneficiario(bonoDTO.getBeneficiario());
+        bono.setMonto(bonoDTO.getMonto());
+        bono.setEstatus(Bono.Estatus.valueOf(bonoDTO.getEstatus()));
+
         bonoServicio.guardarBono(bono);
         return "redirect:/";
     }
@@ -103,5 +139,17 @@ public class BonoControlador {
         Bono bono = bonoServicio.getBonoById(idBono);
         bonoServicio.eliminarBono(bono);
         return "redirect:/";
+    }
+
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @GetMapping("/buscar")
+    public String buscarPorId(@RequestParam("id") int id, ModelMap modelo) {
+        Bono bono = bonoServicio.getBonoById(id);
+        if (bono != null) {
+            modelo.addAttribute("bonos", List.of(bono));
+        } else {
+            modelo.addAttribute("mensajeError", "No se encontró ningún bono con ID " + id);
+        }
+        return "index";
     }
 }

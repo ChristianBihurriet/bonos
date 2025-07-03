@@ -24,11 +24,11 @@
             </div>
             <div class="mb-3">
                 <label for="fechaCompra" class="form-label">Fecha de compra</label>
-                <input type="date" class="form-control" id="fechaCompra" th:value="*{fechaCompra}">
+                <input type="date" class="form-control" id="fechaCompra" th:field="*{fechaCompra}">
             </div>
             <div class="mb-3">
                 <label for="fechaVencimiento" class="form-label">Fecha de vencimiento</label>
-                <input type="date" class="form-control" id="fechaVencimiento" th:value="*{fechaVencimiento}">
+                <input type="date" class="form-control" id="fechaVencimiento" th:field="*{fechaVencimiento}">
             </div>
             <div class="mb-3">
                 <label for="estatus" class="form-label">Estado</label>
@@ -46,13 +46,8 @@
                 <button type="submit" class="btn btn-primary btn-sm me-3">Agregar</button>
                 <a href="/" class="btn btn-danger btn-sm">Volver</a>
             </div>
-
-<!--            <div class="mb-3 form-check">-->
-<!--                <input type="checkbox" class="form-check-input" id="exampleCheck1">-->
-<!--                <label class="form-check-label" for="exampleCheck1">Check me out</label>-->
-<!--            </div>-->
-
         </form>
+
     </div>
 </div>
 
