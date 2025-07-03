@@ -1,12 +1,16 @@
 package cb.bonos.controlador;
 
+import cb.bonos.dto.BonoDTO;
 import cb.bonos.modelo.Bono;
 import cb.bonos.servicio.BonoServicio;
+import jakarta.validation.Valid;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.slf4j.Logger;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -20,6 +24,7 @@ public class BonoControlador {
     @Autowired
     BonoServicio bonoServicio;
 
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/")
     public String iniciar(ModelMap modelo) {
         List<Bono> bonos = bonoServicio.listarBonos();
@@ -28,22 +33,38 @@ public class BonoControlador {
         return "index";
     }
 
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/agregar")
     public String mostrarAgregar(ModelMap modelo) {
-        Bono bono = new Bono();
-        bono.setFechaCompra(LocalDate.now());
-        bono.setFechaVencimiento(LocalDate.now().plusMonths(6));
-        modelo.addAttribute("bono", bono);
+        BonoDTO bonoDTO = new BonoDTO();
+        bonoDTO.setFechaCompra(LocalDate.now());
+        bonoDTO.setFechaVencimiento(LocalDate.now().plusMonths(6));
+        modelo.addAttribute("bonoDTO", bonoDTO);
         return "agregar";
     }
 
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PostMapping("/agregar")
-    public String agregar(@ModelAttribute("bonoForma") Bono bono) {
+    public String agregar(@Valid @ModelAttribute("bonoDTO") BonoDTO bonoDTO, BindingResult result, ModelMap modelo) {
+        if (result.hasErrors()) {
+            modelo.addAttribute("bonoDTO", bonoDTO);
+            return "agregar"; // vuelve al formulario con los errores
+        }
+        Bono bono = new Bono();
+        bono.setFechaCompra(bonoDTO.getFechaCompra());
+        bono.setFechaVencimiento(bonoDTO.getFechaVencimiento());
+        Bono.Estatus statusEnum = Bono.Estatus.valueOf(bonoDTO.getEstatus());
+        bono.setEstatus(statusEnum);
+        bono.setMonto(bonoDTO.getMonto());
+        bono.setComprador(bonoDTO.getComprador());
+        bono.setBeneficiario(bonoDTO.getBeneficiario());
+        bono.setServicio(bonoDTO.getServicio());
         logger.info("Bono a agregar: {}", bono);
         bonoServicio.guardarBono(bono);
         return "redirect:/";
     }
 
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/editar/{id}")
     public String mostrarEditar(@PathVariable(value = "id") int idBono, ModelMap modelo) {
         Bono bono = bonoServicio.getBonoById(idBono);
@@ -52,6 +73,7 @@ public class BonoControlador {
         return "editar";
     }
 
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PostMapping("/editar")
     public String editar(@ModelAttribute("bono") Bono bono) {
         logger.info("Bono a editar: {}", bono);
@@ -59,6 +81,7 @@ public class BonoControlador {
         return "redirect:/";
     }
 
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/cambiar-estatus/{id}")
     public String cambiarEstatus(@PathVariable(value = "id") int idBono, @RequestParam("valor") String nuevoEstatus) {
         Bono bono = bonoServicio.getBonoById(idBono);
@@ -74,6 +97,7 @@ public class BonoControlador {
         return "redirect:/";
     }
 
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/eliminar/{id}")
     public String eliminar(@PathVariable(value = "id") int idBono) {
         Bono bono = bonoServicio.getBonoById(idBono);

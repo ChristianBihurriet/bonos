@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div th:fragment="navegacion-seccion" th:remove="tag">
     <!--    Div del menu de navegacion   -->
     <div class="container">
@@ -18,11 +18,8 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/agregar">Agregar Bono</a>
                         </li>
-<!--                        <li class="nav-item">-->
-<!--                            <a class="nav-link" href="#">Pricing</a>-->
-<!--                        </li>-->
-<!--                        <li class="nav-item">-->
-<!--                            <a class="nav-link disabled" aria-disabled="true">Disabled</a>-->
+                        <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                            <a class="nav-link" href="/usuarios">Administrar usuarios</a>
                         </li>
                     </ul>
                 </div>

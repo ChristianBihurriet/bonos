@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/cabecero::cabecero-seccion(titulo='Usuarios')}"></head>
+<body>
+
+<!-- Navbar -->
+<div th:replace="~{fragmentos/navegacion::navegacion-seccion}"></div>
+
+<!-- Contenido principal -->
+<div class="container">
+    <div class="container text-center" style="margin:30px">
+        <h3>Gestión de usuarios</h3>
+    </div>
+
+    <table class="table table-striped table-hover align-middle table-bordered">
+        <thead class="table-dark text-center">
+        <tr>
+            <th>ID</th>
+            <th>Usuario</th>
+            <th>Roles</th>
+            <th>Acción</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="usuario : ${usuarios}">
+            <td th:text="${usuario.id}">ID</td>
+            <td th:text="${usuario.username}">Nombre</td>
+            <td>
+                <span th:each="rol : ${usuario.roles}"
+                      th:text="${rol.name}"
+                      class="badge bg-secondary me-1">
+                </span>
+            </td>
+            <td class="text-center">
+                <a th:href="@{/usuarios/eliminar/{id}(id=${usuario.id})}" class="btn btn-danger btn-sm">Eliminar</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="container mt-5">
+        <h4>Agregar nuevo usuario</h4>
+        <form th:action="@{/usuarios/agregar}" th:object="${usuarioForma}" method="post">
+            <div class="mb-3">
+                <label for="username" class="form-label">Nombre de usuario</label>
+                <input type="text" class="form-control" th:field="*{username}" id="username" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" th:field="*{password}" id="password" required>
+            </div>
+            <div class="mb-3">
+                <label for="roles" class="form-label">Rol</label>
+                <select multiple class="form-select" th:field="*{roles}" name="roles" id="roles">
+                <option value="ADMIN">ADMIN</option>
+                    <option value="USER">USER</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Crear usuario</button>
+        </form>
+    </div>
+
+</div>
+
+<!-- Footer -->
+<div th:replace="~{fragmentos/footer::footer}"></div>
+
+</body>
+</html>
